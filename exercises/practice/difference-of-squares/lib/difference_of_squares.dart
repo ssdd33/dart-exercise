@@ -19,18 +19,20 @@ class DifferenceOfSquares {
       int mid = num ~/ 2;
       int baseNum = (pow(mid, 2) + pow(mid + 1, 2)).toInt();
       int result = baseNum * mid;
+      int factorialNum = 0;
       for (int n = 1; n <= mid - 1; n++) {
-        result += 4 * factorial(n);
+        factorialNum += n;
+        result += 4 * factorialNum;
       }
       return result;
     } else {
       int mid = sqrt(num).ceil().toInt();
       int baseNum = (pow(mid - 1, 2) + pow(mid + 1, 2)).toInt();
-
       int result = baseNum * (mid - 1) + pow(mid, 2).toInt();
-
+      int factorialNum = 0;
       for (int n = 1; n <= mid - 2; n++) {
-        result += (6 * n) + (4 * factorial(n - 1));
+        factorialNum += n - 1;
+        result += (6 * n) + (4 * factorialNum);
       }
       return result;
     }
@@ -38,16 +40,5 @@ class DifferenceOfSquares {
 
   int differenceOfSquares(int num) {
     return squareOfSum(num) - sumOfSquares(num);
-  }
-
-  int factorial(int num) {
-    int result = 0;
-    if (num > 0) {
-      for (int n = 1; n <= num; n++) {
-        result += n;
-      }
-    }
-
-    return result;
   }
 }
