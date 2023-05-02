@@ -11,14 +11,27 @@ class Forth {
     '-': '-',
     '*': '*',
     '/': '/',
-    ':': ':'
   };
 
   void evaluate(String subset) {
     words = subset.split(' ');
 
     if (words[0] == ':') {
-      commands[words[0]] = words.sublist(1, words.length - 2).join(' ');
+      if (isNumeric(words[1])) {
+        throwsInvalidDefinition();
+      }
+      String lowcaseWord = words[1].toLowerCase();
+      commands[lowcaseWord] = words
+          .sublist(2, words.length - 1)
+          .map<String>((word) {
+            String lowcaseWord = word.toLowerCase();
+            return commands[lowcaseWord] != null
+                ? commands[lowcaseWord]!
+                : lowcaseWord;
+          })
+          .toList()
+          .join(' ');
+      return;
     }
 
     while (words.length > 0) {
@@ -30,23 +43,27 @@ class Forth {
       } else {
         try {
           operate(currentWord);
-        } on Exception {
-          rethrow;
+        } catch (e) {
+          throw (e);
         }
       }
     }
   }
 
-  Exception throwsEmptyStack() {
-    throw (Exception('Exception: Stack empty'));
+  void throwsEmptyStack() {
+    throw (Exception('Stack empty'));
   }
 
-  Exception throwsInvalidDefinition() {
-    throw (Exception('Exception: Invalid definition'));
+  void throwsInvalidDefinition() {
+    throw (Exception('Invalid definition'));
   }
 
-  Exception throwsUnknownCommands() {
-    throw (Exception('Exception: Unknown command'));
+  void throwsUnknownCommands() {
+    throw (Exception('Unknown command'));
+  }
+
+  void throwsDivisionByZero() {
+    throw (Exception('Division by zero'));
   }
 
   bool isNumeric(String str) {
@@ -57,52 +74,80 @@ class Forth {
     String lowCaseOperator = operator.toLowerCase();
     String? command = commands[lowCaseOperator];
 
-    if (command != 'drop') {
-      if (stack.length < 2) {
-        throwsEmptyStack();
-      }
-      int num1 = stack.removeLast();
-      int num2 = stack.removeLast();
-      switch (command) {
-        case 'swap':
-          stack.addAll([num1, num2]);
-          break;
+    switch (command) {
+      case 'swap':
+        if (stack.length < 2) {
+          throwsEmptyStack();
+        }
+        int num1 = stack.removeLast();
+        int num2 = stack.removeLast();
 
-        case 'over':
-          stack.add(stack[stack.length - 2]);
-          break;
+        stack.addAll([num1, num2]);
+        break;
 
-        case 'dup':
-          stack.add(stack[stack.length - 1]);
-          break;
+      case 'over':
+        if (stack.length < 2) {
+          throwsEmptyStack();
+        }
+        int num1 = stack.removeLast();
+        int num2 = stack.removeLast();
+        stack.addAll([num2, num1, num2]);
+        break;
 
-        case '+':
-          stack.add(num1 + num2);
-          break;
-        case '-':
-          stack.add(num1 - num2);
-          break;
-        case '*':
-          stack.add(num1 * num2);
-          break;
-        case '/':
-          stack.add(num1 ~/ num2);
-          break;
-        default:
-          {
-            if (command != null) {
-              words = [...command.split(' '), ...words];
-            } else {
-              throwsUnknownCommands();
-            }
-          }
-      }
-    } else {
-      if (stack.length == 0) {
-        throwsEmptyStack();
-      } else {
+      case '+':
+        if (stack.length < 2) {
+          throwsEmptyStack();
+        }
+        int num1 = stack.removeLast();
+        int num2 = stack.removeLast();
+        stack.add(num1 + num2);
+        break;
+      case '-':
+        if (stack.length < 2) {
+          throwsEmptyStack();
+        }
+        int num1 = stack.removeLast();
+        int num2 = stack.removeLast();
+        stack.add(num2 - num1);
+        break;
+      case '*':
+        if (stack.length < 2) {
+          throwsEmptyStack();
+        }
+        int num1 = stack.removeLast();
+        int num2 = stack.removeLast();
+        stack.add(num1 * num2);
+        break;
+      case '/':
+        if (stack.length < 2) {
+          throwsEmptyStack();
+        }
+        int num1 = stack.removeLast();
+        int num2 = stack.removeLast();
+        if (num1 == 0) {
+          throwsDivisionByZero();
+        }
+        stack.add(num2 ~/ num1);
+        break;
+      case 'drop':
+        if (stack.length == 0) {
+          throwsEmptyStack();
+        }
         stack.removeLast();
-      }
+        break;
+      case 'dup':
+        if (stack.length == 0) {
+          throwsEmptyStack();
+        }
+        stack.add(stack[stack.length - 1]);
+
+        break;
+      default:
+        if (command != null) {
+          words = [...command.split(' '), ...words];
+        } else {
+          throwsUnknownCommands();
+        }
     }
   }
 }
