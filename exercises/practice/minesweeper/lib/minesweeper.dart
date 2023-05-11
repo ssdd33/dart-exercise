@@ -20,10 +20,10 @@ class Minesweeper {
 
     for (int row = 0; row < rowLength; row++) {
       for (int col = 0; col < colLength; col++) {
-if(square[row][col]=='*'){
-    annotatedMap[row].insert(col, '*');
-    continue;
-}
+        if (square[row][col] == '*') {
+          annotatedMap[row].insert(col, '*');
+          continue;
+        }
 
         int mineCount = 0;
 
@@ -54,7 +54,8 @@ if(square[row][col]=='*'){
       }
     }
 
-  List<String> annotatedArray = annotatedMap.map((array)=>{String string = array.join(''); return string;}).toList();
+    return List<String>.from(
+        annotatedMap.map((array) => array.join('')).toList());
   }
 
   int mineToInt(int row, int col) {
