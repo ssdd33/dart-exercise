@@ -12,9 +12,8 @@ class MatchingBrackets {
       if (pairBracket != null) {
         stack.add(pairBracket);
       } else {
-        String stackTop = '';
         try {
-          stackTop = stack.removeLast();
+          String stackTop = stack.removeLast();
           if (stackTop != str[i]) {
             throw (Error);
           }
