@@ -1,32 +1,26 @@
 bool isValid(String isbn) {
   /*
-  1. remove dashes 
-  2. check length 
-  3. check is there any character 
-  4. check last string is int or Character&X
-  5. check mod11 ==0
+  1.check length
+  2.check if there is character in middle of isbn
+  3.if last isbn is character check if its 'X'
+  4.check its mod11 == 0
   */
 
-  String parsed = isbn.replaceAll('-', '');
-  if (parsed.length > 10) {
+  List<String> chars = isbn.replaceAll('-', '').split('');
+  if (chars.length != 10) {
     return false;
   }
-
-  List<String> chars = parsed.split('');
   int sum = 0;
   for (var i = 0; i < 10; i++) {
-    print('${isNumeric(chars[i])} ,  $i , ${chars[i]}');
     if (!isNumeric(chars[i])) {
-      print('nan $i, ${chars[i]}');
-      if (i != 9 || chars[i] != 'X') {
+      if (i < 9) {
         return false;
-      } else {
-        sum += 10;
-        break;
+      } else if (chars[i] != 'X') {
+        return false;
       }
+      sum += 10;
     }
-    print('numeric $i , ${chars[i]}');
-    sum += (10 - i) * int.parse(chars[i]);
+    sum += int.parse(chars[i]) * (10 - i);
   }
 
   if (sum % 11 != 0) {
@@ -37,9 +31,9 @@ bool isValid(String isbn) {
 
 bool isNumeric(String str) {
   try {
-    double.parse(str);
+    int.parse(str);
     return true;
-  } catch (e) {
+  } on FormatException {
     return false;
   }
 }
