@@ -27,24 +27,16 @@ class Minesweeper {
 
         int mineCount = 0;
 
-        if (col != 0) {
-          mineCount += mineToInt(row, col - 1);
-          if (row != 0) {
-            mineCount += mineToInt(row - 1, col);
-            mineCount += mineToInt(row - 1, col - 1);
-          }
-          if (row != rowLength - 1) {
-            mineCount += mineToInt(row + 1, col - 1);
-            mineCount += mineToInt(row + 1, col);
-          }
-        }
-        if (col != colLength - 1) {
-          mineCount += mineToInt(row, col + 1);
-          if (row != 0) {
-            mineCount += mineToInt(row - 1, col + 1);
-          }
-          if (row != rowLength - 1) {
-            mineCount += mineToInt(row + 1, col + 1);
+        for (int checkRow = row - 1; checkRow <= row + 1; checkRow++) {
+          for (int checkCol = col - 1; checkCol <= col + 1; checkCol++) {
+            if (checkRow == row && checkCol == col) continue;
+
+            if (checkRow < 0 ||
+                checkRow > rowLength - 1 ||
+                checkCol < 0 ||
+                checkCol > colLength - 1) continue;
+
+            mineCount += mineToInt(checkRow, checkCol);
           }
         }
 
@@ -54,11 +46,14 @@ class Minesweeper {
       }
     }
 
-    return List<String>.from(
-        annotatedMap.map((array) => array.join('')).toList());
+    final strArray = annotatedMap.map((array) => array.join(''));
+
+    List<String> result = List<String>.from(strArray);
+
+    return result;
   }
 
   int mineToInt(int row, int col) {
-    return square[row][col - 1] == '*' ? 1 : 0;
+    return square[row][col] == '*' ? 1 : 0;
   }
 }
