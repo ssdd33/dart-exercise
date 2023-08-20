@@ -7,7 +7,7 @@ void main() {
   group('PrimeFactors', () {
     test('no factors', () {
       final result = primeFactors.factors(1);
-      expect(result, equals([]));
+      expect(result, equals(<int>[]));
     }, skip: false);
 
     test('prime number', () {
