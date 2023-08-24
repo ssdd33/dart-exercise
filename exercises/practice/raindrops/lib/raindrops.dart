@@ -3,15 +3,15 @@ class Raindrops {
     String result = '';
 
     if (value % 3 == 0) {
-      result += 'pling';
+      result += 'Pling';
     }
 
     if (value % 5 == 0) {
-      result += 'plang';
+      result += 'Plang';
     }
 
     if (value % 7 == 0) {
-      result += 'plong';
+      result += 'Plong';
     }
 
     if (result == '') {
