@@ -13,12 +13,14 @@ each word
   List<String> words = phrase.split(' ');
 
   print('words $words');
-  RegExp clusterMatch = RegExp(r'^qu|^[^aeiou(xr)(yt)]*');
+  RegExp clusterMatch =
+      RegExp(r'^(qu|((?!xr|yt)[^yaeio]qu)|(((?!xr|yt)[^aeiou])[^aeiouy]*))');
 
   final newWords = words.map((word) {
     final cluster = clusterMatch.firstMatch(word)?.group(0);
+    print(cluster);
     if (cluster != null) {
-      return '${word.substring(cluster.length, word.length)}${word.substring(0, cluster.length)}${cluster}ay';
+      return '${word.substring(cluster.length, word.length)}${cluster}ay';
     }
     print(word);
     return '${word}ay';
