@@ -24,7 +24,7 @@ class PhoneNumber {
     Map<String, String> digitToWord = {'0': 'zero', '1': 'one'};
     List<String> unAcceptableDigits = ['0', '1'];
 
-    RegExp checkPunc = RegExp(r'[()\-+]|(\s\b|\b\s)+');
+    RegExp checkPunc = RegExp(r'[()\-+\.]|\s+');
 
     final digits = phoneNumber.replaceAll(checkPunc, "");
     print(phoneNumber);
@@ -50,7 +50,7 @@ class PhoneNumber {
       }
       if (unAcceptableDigits.contains(firstOfAreaCode)) {
         throw _throwFormatException(
-            'area code cannot start with ${[digitToWord[firstOfAreaCode]]}');
+            'area code cannot start with ${digitToWord[firstOfAreaCode]}');
       }
 
       if (unAcceptableDigits.contains(firstOfExchangeCode)) {
@@ -69,7 +69,7 @@ class PhoneNumber {
 
       if (unAcceptableDigits.contains(firstOfAreaCode)) {
         throw _throwFormatException(
-            'area code cannot start with ${[digitToWord[firstOfAreaCode]]}');
+            'area code cannot start with ${digitToWord[firstOfAreaCode]}');
       }
 
       if (unAcceptableDigits.contains(firstOfExchangeCode)) {
