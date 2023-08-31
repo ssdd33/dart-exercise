@@ -20,18 +20,20 @@ triangle[5-1][1] = triangle[3-1][2-1] + triangle[3-1][2-0]
 
     for (int rowIndex = 1; rowIndex <= count; rowIndex++) {
       List<int> row = [];
-      for (int i = 1; i <= count; i++) {
+      for (int i = 1; i <= rowIndex; i++) {
         //make row
-        if (i == 1 || i == count) {
+        if (1 == i || i == rowIndex) {
           row.add(1);
         } else {
-          int number = result[rowIndex - 1][i - 1] + result[rowIndex - 1][i];
+          int number =
+              result[rowIndex - 2][i - 2] + result[rowIndex - 2][i - 1];
+
           row.add(number);
         }
 
         //add row to triangle
-        result.add(row);
       }
+      result.add(row);
     }
 
     return result;
