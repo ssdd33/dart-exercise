@@ -1,5 +1,4 @@
 class Pangram {
-  // Put your code here
   bool isPangram(String sentence) {
     /*
  
@@ -13,15 +12,28 @@ class Pangram {
     */
 
     final letterSet = {...sentence.toLowerCase().split('')};
+
     if (letterSet.length < 26) return false;
 
-    final asciiCodes = letterSet.join().codeUnits;
-
+    final asciiCodes = letterSet.join().codeUnits.toList();
+    asciiCodes.sort((a, b) => a - b);
+    bool isAExist = false;
+    bool isZExist = false;
     for (int i = 0; i < asciiCodes.length; i++) {
       int code = asciiCodes[i];
-      if (code < 97 || code > 122) return false;
+      if (code == 97) {
+        isAExist = true;
+      }
+      if (code == 122) {
+        isZExist = true;
+      }
+      if (code > 97 && code < 122 && i + 1 < asciiCodes.length) {
+        if (code != asciiCodes[i + 1] - 1) {
+          return false;
+        }
+      }
     }
 
-    return true;
+    return isAExist && isZExist;
   }
 }
