@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class NthPrime {
   static final _primeList = <int>[2];
 
@@ -15,26 +13,28 @@ class NthPrime {
   if  its last divisor and its not divided then its prime num!
 
     */
+
     if (nth == 0) {
-      throw ArgumentError('Invalid argument(s): There is no zeroth prime');
+      throw ArgumentError('There is no zeroth prime');
     } else {
-      if (nth <= _primeList.length) return _primeList[nth - 1];
+      if (nth > _primeList.length) {
+        int currentNum = _primeList.last + 1;
 
-      int currentNum = _primeList.last;
-      double sqrtNum = sqrt(currentNum);
-
-      while (_primeList.length < nth) {
-        currentNum++;
-        for (int divisor = currentNum; divisor < sqrtNum; divisor++) {
-          if (currentNum % divisor == 0) {
-            break;
-          } else if (divisor + 1 >= sqrtNum) {
-            print(currentNum);
-            _primeList.add(currentNum);
+        while (_primeList.length < nth) {
+          for (int i = 0; i < _primeList.length; i++) {
+            if (currentNum % _primeList[i] == 0) {
+              break;
+            }
+            if (i == _primeList.length - 1 &&
+                currentNum % _primeList.last != 0) {
+              _primeList.add(currentNum);
+            }
           }
+          currentNum++;
         }
       }
-      return _primeList[nth];
+
+      return _primeList[nth - 1];
     }
   }
 }
