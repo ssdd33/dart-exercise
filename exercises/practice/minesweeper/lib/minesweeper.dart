@@ -1,10 +1,15 @@
 class Minesweeper {
-  List<String> square;
+  final List<String> square;
+  List<String> annotated = [];
   Minesweeper(
     this.square,
-  );
+  ) {
+    if (square.length != 0) {
+      annotate();
+    }
+  }
 
-  List<String> annotated() {
+  void annotate() {
     /*
     0. create map same length with square and filled with ' '
     1. get adjacent positions
@@ -15,13 +20,16 @@ class Minesweeper {
 
     int rowLength = square.length;
     int colLength = square[0].length;
-
-    final annotatedMap = List.filled(rowLength, List.filled(colLength, ' '));
+    List<List<String>> annotatedMap = [];
 
     for (int row = 0; row < rowLength; row++) {
+      List<String> temp = List.filled(colLength, ' ');
+
       for (int col = 0; col < colLength; col++) {
         if (square[row][col] == '*') {
-          annotatedMap[row].insert(col, '*');
+          temp[col] = '*';
+          print('* $row $col');
+          print(temp);
           continue;
         }
 
@@ -41,16 +49,20 @@ class Minesweeper {
         }
 
         if (mineCount != 0) {
-          annotatedMap[row].insert(col, mineCount.toString());
+          print('$mineCount $row $col');
+          temp[col] = mineCount.toString();
+          print(temp);
         }
       }
+
+      annotatedMap.add(temp);
     }
 
     final strArray = annotatedMap.map((array) => array.join(''));
 
     List<String> result = List<String>.from(strArray);
 
-    return result;
+    annotated = result;
   }
 
   int mineToInt(int row, int col) {
