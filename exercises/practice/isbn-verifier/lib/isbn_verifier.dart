@@ -19,8 +19,9 @@ bool isValid(String isbn) {
         return false;
       }
       sum += 10;
+    } else {
+      sum += int.parse(chars[i]) * (10 - i);
     }
-    sum += int.parse(chars[i]) * (10 - i);
   }
 
   if (sum % 11 != 0) {
