@@ -47,7 +47,7 @@
 //     return list;
 //   }
 // }
-
+//TODO try to use shift operator & not use
 class Allergies {
   final substances = [
     'eggs',

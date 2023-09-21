@@ -1,3 +1,4 @@
+//TODO try to use shift operator
 class SecretHandshake {
   List<String> actions = ['wink', 'double blink', 'close your eyes', 'jump'];
   List<String> commands(int num) {
