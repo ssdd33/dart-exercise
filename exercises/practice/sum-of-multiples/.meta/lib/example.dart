@@ -1,5 +1,6 @@
-class SumOfMultiples {
+//TODO check
 
+class SumOfMultiples {
   int sum(List<int> rootArray, int limit) {
     final multiplesTracked = <int>{};
 
@@ -12,5 +13,6 @@ class SumOfMultiples {
     return multiplesTracked.fold<int>(0, _addUpMultiples);
   }
 
-  int _addUpMultiples(int currentSum, int arrayValue) => currentSum + arrayValue;
+  int _addUpMultiples(int currentSum, int arrayValue) =>
+      currentSum + arrayValue;
 }
