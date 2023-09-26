@@ -1,4 +1,3 @@
-String twoFer() {
-  // Replace the throw call and put your code here
-  throw UnimplementedError();
+String twoFer([String? friend]) {
+  return "One for ${friend != null ? friend : "you"}, one for me.";
 }
